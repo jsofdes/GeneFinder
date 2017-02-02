@@ -21,32 +21,69 @@ def shuffle_string(s):
 
 
 def get_complement(nucleotide):
-    """ Returns the complementary nucleotide
+    if nucleotide == "A":
+        #print("T")
+        pass "T"
+    elif nucleotide == "T":
+            #print("A")
+            pass "A"
+    elif nucleotide == "C":
+            #print("G")
+            pass "G"
+    elif nucleotide == "G":
+            #print("C")
+            pass "C"
 
-        nucleotide: a nucleotide (A, C, G, or T) represented as a string
-        returns: the complementary nucleotide
-    >>> get_complement('A')
-    'T'
-    >>> get_complement('C')
-    'G'
-    """
-    # TODO: implement this
-    pass
+
+# get_complement("A")
+# get_complement("T")
+# get_complement("C")
+# get_complement("G")
+#
+#
+    # """ Returns the complementary nucleotide
+    #
+    #     nucleotide: a nucleotide (A, C, G, or T) represented as a string
+    #     returns: the complementary nucleotide
+    # >>> get_complement('A')
+    # 'T'
+    # >>> get_complement('C')
+    # 'G'
+    # """
+    # # TODO: implement this
+    # pass
 
 
 def get_reverse_complement(dna):
-    """ Computes the reverse complementary sequence of DNA for the specfied DNA
-        sequence
+    dna_list = list(dna)
+    n = len(dna_list)
+    print(n)
+    complement_dna = [0,0,0,0]
+    for x in range(0, n):
+        y = dna_list[x]
+        #print(y)(
+        complement_dna[x] = str(get_complement(y))
+    c=complement_dna
+    b = ''.join(complement_dna)
+    #print b
+    print(c)
 
-        dna: a DNA sequence represented as a string
-        returns: the reverse complementary DNA sequence represented as a string
-    >>> get_reverse_complement("ATGCCCGCTTT")
-    'AAAGCGGGCAT'
-    >>> get_reverse_complement("CCGCGTTCA")
-    'TGAACGCGG'
-    """
-    # TODO: implement this
-    pass
+
+get_reverse_complement('ATGC')
+
+    # """ Computes the reverse complementary sequence of DNA for the specfied DNA
+    #     sequence
+    #
+    #     dna: a DNA sequence represented as a string
+    #     returns: the reverse complementary DNA sequence represented as a string
+    #
+    # >>> get_reverse_complement("ATGCCCGCTTT")
+    # 'AAAGCGGGCAT'
+    # >>> get_reverse_complement("CCGCGTTCA")
+    # 'TGAACGCGG'
+    # """
+    # # TODO: implement this
+    # pass
 
 
 def rest_of_ORF(dna):
@@ -152,14 +189,17 @@ def coding_strand_to_AA(dna):
     pass
 
 
-def gene_finder(dna):
-    """ Returns the amino acid sequences that are likely coded by the specified dna
+# def gene_finder(dna):
+#     """ Returns the amino acid sequences that are likely
+# coded by the specified dna
+#
+#         dna: a DNA sequence
+#         returns: a list of all amino acid sequences
+# coded by the sequence dna.
+#     """
+#     # TODO: implement this
+#     pass
 
-        dna: a DNA sequence
-        returns: a list of all amino acid sequences coded by the sequence dna.
-    """
-    # TODO: implement this
-    pass
 
 if __name__ == "__main__":
     import doctest
