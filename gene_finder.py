@@ -23,16 +23,16 @@ def shuffle_string(s):
 def get_complement(nucleotide):
     if nucleotide == "A":
         #print("T")
-        pass "T"
+        return "T"
     elif nucleotide == "T":
             #print("A")
-            pass "A"
+        return "A"
     elif nucleotide == "C":
             #print("G")
-            pass "G"
+            return "G"
     elif nucleotide == "G":
             #print("C")
-            pass "C"
+            return "C"
 
 
 # get_complement("A")
@@ -57,67 +57,120 @@ def get_complement(nucleotide):
 def get_reverse_complement(dna):
     dna_list = list(dna)
     n = len(dna_list)
-    print(n)
-    complement_dna = [0,0,0,0]
+    #print(n)
+    complement_dna = [0]*n
     for x in range(0, n):
         y = dna_list[x]
         #print(y)(
-        complement_dna[x] = str(get_complement(y))
+        complement_dna[x] = get_complement(y)
     c=complement_dna
+    #print(c)
     b = ''.join(complement_dna)
     #print b
-    print(c)
+    return (b)
+
+#
+# get_reverse_complement('ATGC')
+
+    """ Computes the reverse complementary sequence of DNA for the specfied DNA
+        sequence
+
+        dna: a DNA sequence represented as a string
+        returns: the reverse complementary DNA sequence represented as a string
+
+    >>> get_reverse_complement("ATGCCCGCTTT")
+    'AAAGCGGGCAT'
+    >>> get_reverse_complement("CCGCGTTCA")
+    'TGAACGCGG'
+    """
+    # TODO: implement this
+    pass
 
 
-get_reverse_complement('ATGC')
-
-    # """ Computes the reverse complementary sequence of DNA for the specfied DNA
-    #     sequence
+def rest_of_ORF(dna):
+    # """ Takes a DNA sequence that is assumed to begin with a start
+    #         codon and returns the sequence up to but not including the
+    #         first in frame stop codon(TAG, TGA, TAA).  If there is no in frame stop codon,
+    #         returns the whole string.
     #
-    #     dna: a DNA sequence represented as a string
-    #     returns: the reverse complementary DNA sequence represented as a string
+    #         dna: a DNA sequence
+    #         returns: the open reading frame represented as a string
+    # >>> rest_of_ORF("ATGTGAA")"""
+    dna_list = list(dna)
+    h = int(len(dna_list))
+    for i in range(0, h, 3):
+        #print(i)
+        try:
+            codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
+        except IndexError:
+           break
+        #codon = dna_list[i]+dna_list[i+1]+dna_list[i+2]
+        #print(codon)
+        if (codon == 'TAG') or (codon == 'TAA') or (codon == 'TGA'):
+            b = int(i)
+            dna_new=dna[0:b]
+            #print("found stop codon")
+            #return dna_new
+            break
+        else:
+            dna_n=dna_list[:]
+            r= ''.join(dna_n)
+            dna_new=r
+            #return dna_new
+            #print('a')
+    #print(dna_new
+        r = ''.join(dna_new)
+        #print(r)
+    print(dna_new)
+    return dna_new
+
+
+rest_of_ORF('ATCTATTAT')
+rest_of_ORF('ATCTAAAAA')
+    # """ Takes a DNA sequence that is assumed to begin with a start
+    #     codon and returns the sequence up to but not including the
+    #     first in frame stop codon(TAG, TGA, TAA).  If there is no in frame stop codon,
+    #     returns the whole string.
     #
-    # >>> get_reverse_complement("ATGCCCGCTTT")
-    # 'AAAGCGGGCAT'
-    # >>> get_reverse_complement("CCGCGTTCA")
-    # 'TGAACGCGG'
+    #     dna: a DNA sequence
+    #     returns: the open reading frame represented as a string
+    # >>> rest_of_ORF("ATGTGAA")
+    # 'ATG'
+    # >>> rest_of_ORF("ATGAGATAGG")
+    # 'ATGAGA'
     # """
     # # TODO: implement this
     # pass
 
 
-def rest_of_ORF(dna):
-    """ Takes a DNA sequence that is assumed to begin with a start
-        codon and returns the sequence up to but not including the
-        first in frame stop codon.  If there is no in frame stop codon,
-        returns the whole string.
-
-        dna: a DNA sequence
-        returns: the open reading frame represented as a string
-    >>> rest_of_ORF("ATGTGAA")
-    'ATG'
-    >>> rest_of_ORF("ATGAGATAGG")
-    'ATGAGA'
-    """
-    # TODO: implement this
-    pass
-
-
 def find_all_ORFs_oneframe(dna):
-    """ Finds all non-nested open reading frames in the given DNA
-        sequence and returns them as a list.  This function should
-        only find ORFs that are in the default frame of the sequence
-        (i.e. they start on indices that are multiples of 3).
-        By non-nested we mean that if an ORF occurs entirely within
-        another ORF, it should not be included in the returned list of ORFs.
+        """ Finds all non-nested open reading frames in the given DNA
+            sequence and returns them as a list.  This function should
+            only find ORFs that are in the default frame of the sequence
+            (i.e. they start on indices that are multiples of 3).
+            By non-nested we mean that if an ORF occurs entirely within
+            another ORF, it should not be included in the returned list of ORFs.
 
-        dna: a DNA sequence
-        returns: a list of non-nested ORFs
-    >>> find_all_ORFs_oneframe("ATGCATGAATGTAGATAGATGTGCCC")
-    ['ATGCATGAATGTAGA', 'ATGTGCCC']
-    """
-    # TODO: implement this
-    pass
+            dna: a DNA sequence
+            returns: a list of non-nested ORFs
+        >>> find_all_ORFs_oneframe("ATGCATGAATGTAGATAGATGTGCCC")
+        ['ATGCATGAATGTAGA', 'ATGTGCCC']
+        """
+        dna_list = list(dna)
+        h = int(len(dna_list))
+        proteins = []
+        i=0
+        while i < h:
+            codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
+            if (codon == 'ATG'):
+                protein_string = rest_of_ORF(dna[i:])
+                proteins.append(protein_string)
+                i=i+len(protein_string)
+            else:
+                i=i+3
+
+        return proteins
+
 
 
 def find_all_ORFs(dna):
@@ -203,4 +256,5 @@ def coding_strand_to_AA(dna):
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod()
+    #doctest.testmod()
+    doctest.run_docstring_examples(find_all_ORFs_oneframe, globals(), verbose=True)
