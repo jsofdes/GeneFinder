@@ -124,7 +124,7 @@ def find_all_ORFs_oneframe(dna):
         h = int(len(dna_list))
         proteins = []
         i=0
-        while i < h:
+        while i < h-2:
             codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
             if (codon == 'ATG'):
                 protein_string = rest_of_ORF(dna[i:])
@@ -150,8 +150,14 @@ def find_all_ORFs(dna):
     >>> find_all_ORFs("ATGCATGAATGTAG")
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
-    # TODO: implement this
-    pass
+    allORF = []
+    a = find_all_ORFs_oneframe(dna[:])
+    b = find_all_ORFs_oneframe(dna[1:])
+    c = find_all_ORFs_oneframe(dna[2:])
+    allORF += a
+    allORF += b
+    allORF += c
+    return allORF
 
 
 def find_all_ORFs_both_strands(dna):
@@ -163,8 +169,14 @@ def find_all_ORFs_both_strands(dna):
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
-    # TODO: implement this
-    pass
+    allORF2_twostrand = []
+    dna_rev = get_reverse_complement(dna)
+    r = find_all_ORFs(dna)
+    b = find_all_ORFs(dna_rev)
+    allORF2_twostrand += r
+    allORF2_twostrand += b
+    return allORF2_twostrand
+    # return r
 
 
 def longest_ORF(dna):
@@ -173,8 +185,16 @@ def longest_ORF(dna):
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
-    # TODO: implement this
-    pass
+    full_string = find_all_ORFs_both_strands(dna)
+    x = len(full_string)
+    r = 'A'
+    for i in range(0, x):
+        z=full_string[i]
+        b=len(z)
+        if len(z) > len(r):
+            r = z  
+    return r
+
 
 
 def longest_ORF_noncoding(dna, num_trials):
@@ -221,4 +241,4 @@ def coding_strand_to_AA(dna):
 if __name__ == "__main__":
     import doctest
     #doctest.testmod()
-    doctest.run_docstring_examples(rest_of_ORF, globals(), verbose=True)
+    doctest.run_docstring_examples(longest_ORF, globals(), verbose=True)
