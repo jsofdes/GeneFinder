@@ -21,18 +21,22 @@ def shuffle_string(s):
 
 
 def get_complement(nucleotide):
+    """ Returns the complementary nucleotide
+        nucleotide: a nucleotide (A, C, G, or T) represented as a string
+        returns: the complementary nucleotide
+    >>> get_complement('A')
+    'T'
+    >>> get_complement('C')
+    'G'
+    """
     if nucleotide == "A":
-        #print("T")
         return "T"
     elif nucleotide == "T":
-            #print("A")
         return "A"
     elif nucleotide == "C":
-            #print("G")
-            return "G"
+        return "G"
     elif nucleotide == "G":
-            #print("C")
-            return "C"
+        return "C"
 
 
 # get_complement("A")
@@ -41,37 +45,9 @@ def get_complement(nucleotide):
 # get_complement("G")
 #
 #
-    # """ Returns the complementary nucleotide
-    #
-    #     nucleotide: a nucleotide (A, C, G, or T) represented as a string
-    #     returns: the complementary nucleotide
-    # >>> get_complement('A')
-    # 'T'
-    # >>> get_complement('C')
-    # 'G'
-    # """
-    # # TODO: implement this
-    # pass
 
 
 def get_reverse_complement(dna):
-    dna_list = list(dna)
-    n = len(dna_list)
-    #print(n)
-    complement_dna = [0]*n
-    for x in range(0, n):
-        y = dna_list[x]
-        #print(y)(
-        complement_dna[x] = get_complement(y)
-    c=complement_dna
-    #print(c)
-    b = ''.join(complement_dna)
-    #print b
-    return (b)
-
-#
-# get_reverse_complement('ATGC')
-
     """ Computes the reverse complementary sequence of DNA for the specfied DNA
         sequence
 
@@ -83,64 +59,52 @@ def get_reverse_complement(dna):
     >>> get_reverse_complement("CCGCGTTCA")
     'TGAACGCGG'
     """
-    # TODO: implement this
-    pass
+    dna_list = list(dna)
+    n = len(dna_list)
+    complement_dna = [0]*n
+    for x in range(0, n):
+        y = dna_list[x]
+        complement_dna[n-x-1] = get_complement(y)
+    c = complement_dna
+    b = ''.join(complement_dna)
+    return (b)
+
+#
+# get_reverse_complement('ATGC')
+
 
 
 def rest_of_ORF(dna):
-    # """ Takes a DNA sequence that is assumed to begin with a start
-    #         codon and returns the sequence up to but not including the
-    #         first in frame stop codon(TAG, TGA, TAA).  If there is no in frame stop codon,
-    #         returns the whole string.
-    #
-    #         dna: a DNA sequence
-    #         returns: the open reading frame represented as a string
-    # >>> rest_of_ORF("ATGTGAA")"""
+    """ Takes a DNA sequence that is assumed to begin with a start
+        codon and returns the sequence up to but not including the
+        first in frame stop codon.  If there is no in frame stop codon,
+        returns the whole string.
+        dna: a DNA sequence
+        returns: the open reading frame represented as a string
+    >>> rest_of_ORF("ATGTGAA")
+    'ATG'
+    >>> rest_of_ORF("ATGAGATAGG")
+    'ATGAGA'
+    """
     dna_list = list(dna)
     h = int(len(dna_list))
     for i in range(0, h, 3):
-        #print(i)
         try:
             codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
         except IndexError:
            break
         #codon = dna_list[i]+dna_list[i+1]+dna_list[i+2]
-        #print(codon)
         if (codon == 'TAG') or (codon == 'TAA') or (codon == 'TGA'):
             b = int(i)
-            dna_new=dna[0:b]
-            #print("found stop codon")
-            #return dna_new
+            dna_new = dna[0:b]
             break
         else:
-            dna_n=dna_list[:]
-            r= ''.join(dna_n)
-            dna_new=r
-            #return dna_new
-            #print('a')
-    #print(dna_new
+            dna_n = dna_list[:]
+            r = ''.join(dna_n)
+            dna_new = r
         r = ''.join(dna_new)
         #print(r)
-    print(dna_new)
     return dna_new
-
-
-rest_of_ORF('ATCTATTAT')
-rest_of_ORF('ATCTAAAAA')
-    # """ Takes a DNA sequence that is assumed to begin with a start
-    #     codon and returns the sequence up to but not including the
-    #     first in frame stop codon(TAG, TGA, TAA).  If there is no in frame stop codon,
-    #     returns the whole string.
-    #
-    #     dna: a DNA sequence
-    #     returns: the open reading frame represented as a string
-    # >>> rest_of_ORF("ATGTGAA")
-    # 'ATG'
-    # >>> rest_of_ORF("ATGAGATAGG")
-    # 'ATGAGA'
-    # """
-    # # TODO: implement this
-    # pass
 
 
 def find_all_ORFs_oneframe(dna):
@@ -257,4 +221,4 @@ def coding_strand_to_AA(dna):
 if __name__ == "__main__":
     import doctest
     #doctest.testmod()
-    doctest.run_docstring_examples(find_all_ORFs_oneframe, globals(), verbose=True)
+    doctest.run_docstring_examples(rest_of_ORF, globals(), verbose=True)
