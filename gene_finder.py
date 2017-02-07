@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 YOUR HEADER COMMENT HERE
-
-@author: YOUR NAME HERE
+for next time I should name variables better
+@author: Juanita Desouza
 
 """
 
@@ -24,10 +24,15 @@ def get_complement(nucleotide):
     """ Returns the complementary nucleotide
         nucleotide: a nucleotide (A, C, G, or T) represented as a string
         returns: the complementary nucleotide
+        The unit tests are sufficient because they test enough cases. I added 2 to do so.
     >>> get_complement('A')
     'T'
     >>> get_complement('C')
     'G'
+    >>> get_complement('T')
+    'A'
+    >>> get_complement('G')
+    'C'
     """
     if nucleotide == "A":
         return "T"
@@ -53,6 +58,7 @@ def get_reverse_complement(dna):
 
         dna: a DNA sequence represented as a string
         returns: the reverse complementary DNA sequence represented as a string
+        The unit tests are sufficient because they test enough cases.
 
     >>> get_reverse_complement("ATGCCCGCTTT")
     'AAAGCGGGCAT'
@@ -81,6 +87,7 @@ def rest_of_ORF(dna):
         returns the whole string.
         dna: a DNA sequence
         returns: the open reading frame represented as a string
+        The unit tests are sufficient because they test enough cases. I added 2 to do so.
     >>> rest_of_ORF("ATGTGAA")
     'ATG'
     >>> rest_of_ORF("ATGAGATAGG")
@@ -117,6 +124,7 @@ def find_all_ORFs_oneframe(dna):
 
             dna: a DNA sequence
             returns: a list of non-nested ORFs
+            The unit tests are sufficient because they test a difficult cases. .
         >>> find_all_ORFs_oneframe("ATGCATGAATGTAGATAGATGTGCCC")
         ['ATGCATGAATGTAGA', 'ATGTGCCC']
         """
@@ -146,7 +154,7 @@ def find_all_ORFs(dna):
 
         dna: a DNA sequence
         returns: a list of non-nested ORFs
-
+The unit tests are sufficient because they test a difficult case.
     >>> find_all_ORFs("ATGCATGAATGTAG")
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
@@ -166,6 +174,7 @@ def find_all_ORFs_both_strands(dna):
 
         dna: a DNA sequence
         returns: a list of non-nested ORFs
+        The unit tests are sufficient because they a difficult case.
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
@@ -182,6 +191,7 @@ def find_all_ORFs_both_strands(dna):
 def longest_ORF(dna):
     """ Finds the longest ORF on both strands of the specified DNA and returns it
         as a string
+        The unit tests are sufficient they test a difficult case
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
@@ -192,7 +202,7 @@ def longest_ORF(dna):
         z=full_string[i]
         b=len(z)
         if len(z) > len(r):
-            r = z  
+            r = z
     return r
 
 
@@ -203,10 +213,19 @@ def longest_ORF_noncoding(dna, num_trials):
 
         dna: a DNA sequence
         num_trials: the number of random shuffles
-        returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
+        returns: the maximum length longest ORF
+        tested this with a print statement"""
+    dna_list = list(dna)
+    z=0
+    for x in range(0,num_trials):
+        random.shuffle(dna_list)
+        red= ''.join(dna_list)
+        r=len(longest_ORF(red))
+        if r > z:
+            z=r
+    return z
 
+#print(longest_ORF_noncoding("AAATATATGCGAATGTAGCATCAAA", 3))
 
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
@@ -216,29 +235,63 @@ def coding_strand_to_AA(dna):
         dna: a DNA sequence represented as a string
         returns: a string containing the sequence of amino acids encoded by the
                  the input DNA fragment
+        The unit tests are sufficient because they test enough cases.
 
         >>> coding_strand_to_AA("ATGCGA")
         'MR'
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    # TODO: implement this
-    pass
+    h= len(dna)
+    dna_list= list(dna)
+    aminoacid=[]
+    aminoacid_s =""
+    for i in range(0, h, 3):
+        try:
+            codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
+        except IndexError:
+            break
+        amino_acid=aa_table[codon]
+        aminoacid+=amino_acid
+        aminoacid_s=''.join(aminoacid)
+    return aminoacid_s
+    # i=0
+    # while i < h-2:
+    # codon=dna_list[i]+dna_list[i+1]+dna_list[i+2]
 
 
-# def gene_finder(dna):
-#     """ Returns the amino acid sequences that are likely
-# coded by the specified dna
-#
-#         dna: a DNA sequence
-#         returns: a list of all amino acid sequences
-# coded by the sequence dna.
-#     """
-#     # TODO: implement this
-#     pass
+def gene_finder(dna):
+    """ Returns the amino acid sequences that are likely
+coded by the specified dna
+
+        dna: a DNA sequence
+        returns: a list of all amino acid sequences
+coded by the sequence dna.
+tested this on 200
+    """
+    threshold = longest_ORF_noncoding(dna, 1500)
+    allORF1= find_all_ORFs_both_strands(dna)
+    print(allORF1)
+    l= len(allORF1)
+    ORfaftert=[]
+    for x in range(0,l):
+        if len(allORF1[x])>threshold:
+            n=allORF1[x]
+            ORfaftert.append(n)
+    am_ret=[]
+    o= len(ORfaftert)
+    print(ORfaftert)
+    for i in range(0, o):
+        z=coding_strand_to_AA(ORfaftert[i])
+        print(z)
+        am_ret.append(z)
+    return am_ret
 
 
 if __name__ == "__main__":
     import doctest
-    #doctest.testmod()
-    doctest.run_docstring_examples(longest_ORF, globals(), verbose=True)
+    doctest.testmod()
+    #doctest.run_docstring_examples(coding_strand_to_AA, globals(), verbose=True)
+    from load import load_seq
+    dna = load_seq("./data/X73525.fa")
+    print(gene_finder(dna))
